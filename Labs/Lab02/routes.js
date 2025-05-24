@@ -1,43 +1,46 @@
 const express = require('express');
 const router = express.Router();
 
+// /name route
 router.get('/name', (req, res) => {
-    res.send('Francis');
+  res.send('Your Name: Francis Amoah');
 });
 
+// /greeting route
 router.get('/greeting', (req, res) => {
-    res.send('Francis - Student Number: n01676890');
+  res.send('Hello, Francis. Student Number: n01676890');
 });
 
+// /add route
 router.get('/add', (req, res) => {
-    const x = parseFloat(req.query.x);
-    const y = parseFloat(req.query.y);
-    const result = x + y;
-    res.send(`Result: ${result}`);
+  const x = parseFloat(req.query.x);
+  const y = parseFloat(req.query.y);
+  if (!isNaN(x) && !isNaN(y)) {
+    res.send(`Result: ${x + y}`);
+  } else {
+    res.send('Please provide valid numbers x and y.');
+  }
 });
 
-
+// /calculate route
 router.get('/calculate', (req, res) => {
-    const a = parseFloat(req.query.a);
-    const b = parseFloat(req.query.b);
-    const operation = req.query.operation;
-    let result;
+  const a = parseFloat(req.query.a);
+  const b = parseFloat(req.query.b);
+  const operation = req.query.operation;
 
-    switch (operation) {
-       case "+":
-        return res.send('${x + y}');
-       case "-":
-         return res.send('${x - y}');
-        case "*":
-         return res.send('${x * y}');
-         case "/":
-            if (y !=0) {
-             return res.send('${x / y}');
-        } else {
-            return res.send("y cannot be 0");
-        }
-    default :
-       break;
-    }
-} )
+  if (isNaN(a) || isNaN(b)) return res.send('Invalid numbers');
 
+  let result;
+  switch (operation) {
+    case '+': result = a + b; break;
+    case '-': result = a - b; break;
+    case '*': result = a * b; break;
+    case '/': result = b !== 0 ? a / b : 'Division by zero error'; break;
+    case '**': result = a ** b; break;
+    default: result = 'Invalid operation';
+  }
+
+  res.send(`Result: ${result}`);
+});
+
+module.exports = router;
